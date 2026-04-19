@@ -33,9 +33,11 @@ const NoteSchema = z.object({
   tryThis: z
     .string()
     .min(8)
-    .max(220)
-    .describe("A single imperative instruction the writer can use on their next draft"),
-  tags: z.array(z.string().min(2).max(20)).min(2).max(4),
+    .max(400)
+    .describe(
+      "A single imperative instruction (≤30 words strongly preferred) the writer can use on their next draft"
+    ),
+  tags: z.array(z.string().min(2).max(36)).min(2).max(5),
 });
 
 const SYSTEM = `You are The Page — a screenwriting mentor who teaches craft by reverse-engineering the techniques of working screenwriters. You produce ONE insight per request.
