@@ -80,3 +80,68 @@ export function subscribe(listener: () => void) {
     window.removeEventListener("storage", handler);
   };
 }
+
+export function isDirectorArcComplete(
+  directorSlug: string,
+  filmSlugs: string[]
+): boolean {
+  const map = read();
+  return filmSlugs.every(
+    (slug) => map[keyFor(directorSlug, slug)]?.state === "unlocked"
+  );
+}
+
+// --- Writing feed read-tracking ---
+
+const READ_KEY = "the-canon/writing-read/v1";
+
+export type WritingNote = {
+  title: string;
+  citation: string;
+  insight: string;
+  tryThis: string;
+  tags: string[];
+  source: "seed" | "ai";
+  readAt: string;
+};
+
+function readNotes(): WritingNote[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(READ_KEY);
+    if (!raw) return [];
+    return JSON.parse(raw) as WritingNote[];
+  } catch {
+    return [];
+  }
+}
+
+function writeNotes(notes: WritingNote[]) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(READ_KEY, JSON.stringify(notes));
+  window.dispatchEvent(new Event("the-canon:writing"));
+}
+
+export function getReadWritingNotes(): WritingNote[] {
+  return readNotes();
+}
+
+export function markWritingNoteRead(note: Omit<WritingNote, "readAt">) {
+  const notes = readNotes();
+  if (notes.some((n) => n.title.trim().toLowerCase() === note.title.trim().toLowerCase())) {
+    return;
+  }
+  notes.unshift({ ...note, readAt: new Date().toISOString() });
+  writeNotes(notes.slice(0, 500));
+}
+
+export function subscribeWriting(listener: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const handler = () => listener();
+  window.addEventListener("the-canon:writing", handler);
+  window.addEventListener("storage", handler);
+  return () => {
+    window.removeEventListener("the-canon:writing", handler);
+    window.removeEventListener("storage", handler);
+  };
+}

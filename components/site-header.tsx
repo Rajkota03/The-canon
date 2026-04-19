@@ -1,15 +1,12 @@
 import { CanonMark } from "./canon-mark";
+import { SiteNav } from "./site-nav";
 
 export function SiteHeader() {
   return (
-    <header className="relative z-10">
-      <div className="mx-auto max-w-6xl px-6 py-6 flex items-center justify-between">
+    <header className="relative z-10 border-b border-border/60">
+      <div className="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between gap-6">
         <CanonMark />
-        <nav className="flex items-center gap-6 text-sm text-muted-foreground">
-          <span className="font-mono text-[11px] uppercase tracking-[0.18em]">
-            A rite of passage
-          </span>
-        </nav>
+        <SiteNav />
       </div>
     </header>
   );

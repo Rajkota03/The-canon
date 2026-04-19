@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { directors } from "@/content/canon";
 import { SiteHeader } from "@/components/site-header";
+import { DirectorRow } from "@/components/director-row";
 
 export default function Home() {
   const first = directors[0];
@@ -45,52 +46,13 @@ export default function Home() {
           <div className="flex items-baseline justify-between mb-10">
             <h2 className="font-display text-3xl">The Canon</h2>
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              {directors.length} / 52 directors
+              {directors.length} / 52 · {directors.length} door{directors.length === 1 ? "" : "s"} open
             </span>
           </div>
 
           <div className="space-y-6">
             {directors.map((d) => (
-              <Link
-                key={d.slug}
-                href={`/d/${d.slug}`}
-                className="group block rounded-2xl border border-border bg-card p-8 transition-all hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-[0_12px_40px_-16px_rgba(30,20,60,0.15)]"
-              >
-                <div className="flex items-start justify-between gap-8">
-                  <div>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                      Director {String(d.order).padStart(2, "0")} · {d.era}
-                    </span>
-                    <h3 className="mt-3 font-display text-4xl leading-tight">
-                      {d.name}
-                    </h3>
-                    <p className="mt-2 text-[14px] text-muted-foreground">
-                      {d.role} · {d.lifespan}
-                    </p>
-                    <p className="mt-5 max-w-xl text-[15px] leading-[1.65] text-foreground/80">
-                      {d.why.split(". ").slice(0, 2).join(". ") + "."}
-                    </p>
-                  </div>
-                  <div className="shrink-0">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground group-hover:text-foreground transition-colors">
-                      Enter →
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-6 pt-6 border-t border-border flex flex-wrap gap-x-6 gap-y-2">
-                  {d.films.map((f) => (
-                    <span
-                      key={f.slug}
-                      className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground"
-                    >
-                      <span className="italic normal-case tracking-normal text-foreground/70">
-                        {f.title}
-                      </span>{" "}
-                      · {f.year}
-                    </span>
-                  ))}
-                </div>
-              </Link>
+              <DirectorRow key={d.slug} director={d} />
             ))}
 
             <div className="rounded-2xl border border-dashed border-border bg-card/40 p-8 text-center">
@@ -98,8 +60,8 @@ export default function Home() {
                 More directors arriving
               </p>
               <p className="mt-3 text-[14px] text-foreground/60 max-w-sm mx-auto">
-                Kubrick, Kurosawa, Bergman, PTA, Villeneuve, Bong, and 46 more.
-                The Canon opens one door at a time.
+                Kurosawa, Bergman, PTA, Villeneuve, Bong, and 45 more. The Canon
+                opens one door at a time.
               </p>
             </div>
           </div>
