@@ -126,14 +126,14 @@ export function WritingFeed() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <header className="pt-12 pb-10">
+      <header className="pt-8 sm:pt-12 pb-8 sm:pb-10">
         <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           The Page · writing craft
         </span>
-        <h1 className="mt-5 font-display text-[56px] sm:text-[72px] leading-[0.95] tracking-tight">
+        <h1 className="mt-4 sm:mt-5 font-display text-[42px] sm:text-[64px] lg:text-[72px] leading-[0.98] sm:leading-[0.95] tracking-tight">
           One note at a time.
         </h1>
-        <p className="mt-6 max-w-xl text-[16px] leading-[1.6] text-foreground/75">
+        <p className="mt-5 sm:mt-6 max-w-xl text-[15px] sm:text-[16px] leading-[1.6] text-foreground/75">
           A feed of real writing-craft hacks — techniques reverse-engineered
           from working screenwriters. Specific, observable, usable tomorrow. No
           Save-the-Cat. No "show don't tell." You'll never see the same note
@@ -179,7 +179,7 @@ export function WritingFeed() {
       {note && (
         <article
           key={note.title}
-          className={`relative overflow-hidden rounded-3xl border border-border bg-card p-10 sm:p-14 animate-in fade-in duration-500`}
+          className={`relative overflow-hidden rounded-3xl border border-border bg-card p-7 sm:p-10 md:p-14 animate-in fade-in duration-500`}
         >
           <div className={`absolute -top-20 -right-20 h-56 w-56 rounded-full ${accentBg[accent]} blur-2xl`} />
 
@@ -190,25 +190,25 @@ export function WritingFeed() {
               <span>{note.source === "seed" ? "curated" : "generated"}</span>
             </div>
 
-            <h2 className="mt-6 font-display text-[44px] sm:text-[56px] leading-[0.98] tracking-tight">
+            <h2 className="mt-5 sm:mt-6 font-display text-[34px] sm:text-[48px] lg:text-[56px] leading-[1.02] sm:leading-[0.98] tracking-tight">
               {note.title}
             </h2>
 
-            <p className="mt-4 font-mono text-[12px] uppercase tracking-[0.18em] text-foreground/70">
+            <p className="mt-3 sm:mt-4 font-mono text-[11px] sm:text-[12px] uppercase tracking-[0.18em] text-foreground/70">
               {note.citation}
             </p>
 
-            <div className="mt-10 prose-canon max-w-2xl">
-              <p className="text-[16px]! leading-[1.75]!">{note.insight}</p>
+            <div className="mt-8 sm:mt-10 prose-canon max-w-2xl">
+              <p className="text-[15px]! sm:text-[16px]! leading-[1.7]! sm:leading-[1.75]!">{note.insight}</p>
             </div>
 
             <div
-              className={`mt-10 rounded-2xl ${accentBg[accent]} p-6 sm:p-7 border border-border/40`}
+              className={`mt-8 sm:mt-10 rounded-2xl ${accentBg[accent]} p-5 sm:p-6 md:p-7 border border-border/40`}
             >
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/70">
                 Try this
               </span>
-              <p className="mt-3 font-display text-[20px] sm:text-[22px] leading-[1.4] text-ink">
+              <p className="mt-3 font-display text-[18px] sm:text-[22px] leading-[1.4] text-ink">
                 {note.tryThis}
               </p>
             </div>
@@ -226,14 +226,14 @@ export function WritingFeed() {
               </div>
             )}
 
-            <div className="mt-12 flex items-center justify-between gap-4 pt-8 border-t border-border">
+            <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 sm:pt-8 border-t border-border">
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                 Read it. Let it settle. Then turn the page.
               </span>
               <Button
                 onClick={markAndNext}
                 disabled={loading}
-                className="h-11 px-6 rounded-full"
+                className="h-11 px-6 rounded-full whitespace-nowrap self-start sm:self-auto"
               >
                 {loading ? (
                   <>

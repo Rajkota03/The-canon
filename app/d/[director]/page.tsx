@@ -21,7 +21,7 @@ export default async function DirectorPage({
     <div className="relative">
       <SiteHeader />
 
-      <main className="mx-auto max-w-5xl px-6 pb-32">
+      <main className="mx-auto max-w-5xl px-5 sm:px-6 pb-24 sm:pb-32">
         <Link
           href="/"
           className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors"
@@ -30,11 +30,11 @@ export default async function DirectorPage({
         </Link>
 
         {/* Director portrait */}
-        <section className="pt-10 pb-20 border-b border-border">
+        <section className="pt-8 sm:pt-10 pb-16 sm:pb-20 border-b border-border">
           <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             Director {String(director.order).padStart(2, "0")} · {director.era}
           </span>
-          <h1 className="mt-6 font-display text-[68px] sm:text-[88px] leading-[0.9] tracking-tight">
+          <h1 className="mt-5 sm:mt-6 font-display text-[44px] sm:text-[72px] lg:text-[88px] leading-[0.96] sm:leading-[0.9] tracking-tight">
             {director.name}
           </h1>
           <p className="mt-4 text-[15px] font-mono uppercase tracking-[0.15em] text-muted-foreground">

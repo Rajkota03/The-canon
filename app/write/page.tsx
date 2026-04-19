@@ -11,7 +11,7 @@ export default function WritePage() {
   return (
     <div className="relative">
       <SiteHeader />
-      <main className="mx-auto max-w-6xl px-6 pb-32">
+      <main className="mx-auto max-w-6xl px-5 sm:px-6 pb-24 sm:pb-32">
         <WritingFeed />
       </main>
     </div>

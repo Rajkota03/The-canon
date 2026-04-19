@@ -8,14 +8,15 @@ type Tab = {
   label: string;
   soon?: boolean;
   activePrefix: string;
+  hideOnMobile?: boolean;
 };
 
 const tabs: Tab[] = [
   { href: "/", label: "The Canon", activePrefix: "/" },
   { href: "/write", label: "The Page", activePrefix: "/write" },
-  { href: "#", label: "The Frame", soon: true, activePrefix: "__never__" },
-  { href: "#", label: "The Cut", soon: true, activePrefix: "__never__" },
-  { href: "#", label: "The Stage", soon: true, activePrefix: "__never__" },
+  { href: "#", label: "The Frame", soon: true, activePrefix: "__never__", hideOnMobile: true },
+  { href: "#", label: "The Cut", soon: true, activePrefix: "__never__", hideOnMobile: true },
+  { href: "#", label: "The Stage", soon: true, activePrefix: "__never__", hideOnMobile: true },
 ];
 
 function isActive(pathname: string, tab: Tab): boolean {
@@ -31,11 +32,12 @@ export function SiteNav() {
     <nav className="flex items-center gap-1 overflow-x-auto">
       {tabs.map((tab) => {
         const active = isActive(pathname, tab);
+        const hiddenClass = tab.hideOnMobile ? "hidden sm:inline-flex" : "inline-flex";
         if (tab.soon) {
           return (
             <span
               key={tab.label}
-              className="shrink-0 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/60 cursor-not-allowed"
+              className={`${hiddenClass} shrink-0 items-center px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/60 cursor-not-allowed`}
               title="Coming in the Canon's next doors"
             >
               {tab.label}
@@ -47,7 +49,7 @@ export function SiteNav() {
           <Link
             key={tab.label}
             href={tab.href}
-            className={`shrink-0 px-3 py-1.5 rounded-full font-mono text-[10px] uppercase tracking-[0.18em] transition-colors ${
+            className={`${hiddenClass} shrink-0 items-center px-3 py-1.5 rounded-full font-mono text-[10px] uppercase tracking-[0.18em] transition-colors ${
               active
                 ? "bg-foreground text-background"
                 : "text-muted-foreground hover:text-foreground"

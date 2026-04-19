@@ -102,15 +102,15 @@ function FilmHero({
         ← {director.name}
       </Link>
 
-      <div className="mt-10 grid gap-12 sm:grid-cols-[1fr_320px]">
+      <div className="mt-8 sm:mt-10 grid gap-8 sm:gap-12 sm:grid-cols-[1fr_320px]">
         <div>
           <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             Film {String(film.order).padStart(2, "0")} · {film.year} · {film.runtime}
           </span>
-          <h1 className="mt-5 font-display text-[72px] sm:text-[96px] leading-[0.92] tracking-tight">
+          <h1 className="mt-4 sm:mt-5 font-display text-[48px] sm:text-[80px] lg:text-[96px] leading-[0.96] sm:leading-[0.92] tracking-tight">
             {film.title}
           </h1>
-          <p className="mt-4 italic text-[18px] text-foreground/75">
+          <p className="mt-3 sm:mt-4 italic text-[16px] sm:text-[18px] text-foreground/75">
             {film.tagline}
           </p>
           <div className="mt-8 flex items-center gap-3">
@@ -239,13 +239,13 @@ function GateSection({
   }
 
   return (
-    <section className="border-t border-border pt-16 pb-16">
+    <section className="border-t border-border pt-12 sm:pt-16 pb-12 sm:pb-16">
       <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8 sm:mb-10">
           <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             The Gate
           </span>
-          <h3 className="mt-3 font-display text-[42px] leading-[1.05]">
+          <h3 className="mt-3 font-display text-[34px] sm:text-[42px] leading-[1.05]">
             One question.
           </h3>
           <p className="mt-3 text-[14px] text-muted-foreground">
@@ -253,8 +253,8 @@ function GateSection({
           </p>
         </div>
 
-        <div className="rounded-3xl bg-card border border-border p-10">
-          <p className="font-display text-[22px] leading-[1.45] text-foreground">
+        <div className="rounded-3xl bg-card border border-border p-6 sm:p-10">
+          <p className="font-display text-[20px] sm:text-[22px] leading-[1.45] text-foreground">
             {film.gate.question}
           </p>
 
@@ -365,29 +365,29 @@ function AnalysisSection({
 
   return (
     <>
-      <section className="border-t border-border pt-16">
+      <section className="border-t border-border pt-12 sm:pt-16">
         <div className="inline-flex items-center gap-2 rounded-full bg-[color:var(--sage)]/60 px-4 py-1.5">
           <CheckCircle2 className="h-3.5 w-3.5 text-ink" />
           <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
             Unlocked
           </span>
         </div>
-        <h2 className="mt-6 font-display text-[56px] leading-[0.95] tracking-tight max-w-3xl">
+        <h2 className="mt-5 sm:mt-6 font-display text-[40px] sm:text-[56px] leading-[0.98] sm:leading-[0.95] tracking-tight max-w-3xl">
           Now the film teaches you back.
         </h2>
       </section>
 
-      <section className="pt-16 space-y-16">
+      <section className="pt-12 sm:pt-16 space-y-12 sm:space-y-16">
         {order.map((craft, i) => (
           <article
             key={craft}
-            className="grid gap-8 sm:grid-cols-[180px_1fr] border-t border-border pt-12"
+            className="grid gap-5 sm:gap-8 sm:grid-cols-[180px_1fr] border-t border-border pt-8 sm:pt-12"
           >
             <div className="sm:sticky sm:top-8 h-fit">
               <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                 {String(i + 1).padStart(2, "0")} / 06
               </span>
-              <h3 className="mt-3 font-display text-[28px] leading-tight">
+              <h3 className="mt-3 font-display text-[26px] sm:text-[28px] leading-tight">
                 {craftLabels[craft]}
               </h3>
             </div>
