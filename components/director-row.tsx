@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Lock } from "lucide-react";
 import type { Director } from "@/content/canon";
-import { directors as allDirectors } from "@/content/canon";
+import { getAllDirectors, subscribeCanon } from "@/lib/canon-store";
 import { isDirectorArcComplete, subscribe } from "@/lib/progress";
 
 export function DirectorRow({ director }: { director: Director }) {
@@ -16,7 +16,9 @@ export function DirectorRow({ director }: { director: Director }) {
         setUnlocked(true);
         return;
       }
-      const predecessor = allDirectors.find((d) => d.slug === director.requires);
+      const predecessor = getAllDirectors().find(
+        (d) => d.slug === director.requires
+      );
       if (!predecessor) {
         setUnlocked(true);
         return;
@@ -29,7 +31,12 @@ export function DirectorRow({ director }: { director: Director }) {
       );
     };
     check();
-    return subscribe(check);
+    const unsubP = subscribe(check);
+    const unsubC = subscribeCanon(check);
+    return () => {
+      unsubP();
+      unsubC();
+    };
   }, [director.requires, director.slug]);
 
   const body = (
@@ -82,7 +89,10 @@ export function DirectorRow({ director }: { director: Director }) {
         <p className="mt-5 italic text-[13px] text-foreground/60">
           Arrives when the{" "}
           <span className="font-medium not-italic">
-            {allDirectors.find((d) => d.slug === director.requires)?.name.split(" ").slice(-1)[0]}
+            {getAllDirectors()
+              .find((d) => d.slug === director.requires)
+              ?.name.split(" ")
+              .slice(-1)[0]}
           </span>{" "}
           arc closes — unlock all three of their films first.
         </p>

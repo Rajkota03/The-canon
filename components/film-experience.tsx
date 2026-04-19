@@ -15,6 +15,7 @@ import {
 } from "@/lib/progress";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { setFilmAnalysis, isGeneratedDirector } from "@/lib/canon-store";
 
 const accentBg: Record<Film["accent"], string> = {
   lavender: "bg-[color:var(--lavender)]",
@@ -198,8 +199,12 @@ function GateSection({
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
-            directorSlug: director.slug,
-            filmSlug: film.slug,
+            directorName: director.name,
+            filmTitle: film.title,
+            filmYear: film.year,
+            question: film.gate.question,
+            rubric: film.gate.rubric,
+            acceptedAnswers: film.gate.acceptedAnswers,
             answer,
           }),
         });
@@ -363,6 +368,83 @@ function AnalysisSection({
     "performance",
   ];
 
+  const needsAnalysis =
+    !film.analysis || typeof film.analysis.writing !== "string";
+  const [fetching, setFetching] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!needsAnalysis) return;
+    if (!isGeneratedDirector(director.slug)) return;
+    let cancelled = false;
+    setFetching(true);
+    setFetchError(null);
+    fetch("/api/generate/analysis", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        directorName: director.name,
+        filmTitle: film.title,
+        filmYear: film.year,
+      }),
+    })
+      .then(async (r) => {
+        if (!r.ok) throw new Error(`Server ${r.status}`);
+        return r.json() as Promise<{
+          writing: string;
+          directing: string;
+          cinematography: string;
+          editing: string;
+          sound: string;
+          performance: string;
+          extras: { label: string; note: string }[];
+        }>;
+      })
+      .then((data) => {
+        if (cancelled) return;
+        const { extras, ...analysis } = data;
+        setFilmAnalysis(director.slug, film.slug, analysis, extras);
+      })
+      .catch((e) => {
+        if (cancelled) return;
+        setFetchError(e?.message ?? "unknown error");
+      })
+      .finally(() => {
+        if (!cancelled) setFetching(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [needsAnalysis, director.slug, director.name, film.slug, film.title, film.year]);
+
+  if (needsAnalysis) {
+    return (
+      <section className="border-t border-border pt-12 sm:pt-16">
+        <div className="inline-flex items-center gap-2 rounded-full bg-[color:var(--sage)]/60 px-4 py-1.5">
+          <CheckCircle2 className="h-3.5 w-3.5 text-ink" />
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink">
+            Unlocked
+          </span>
+        </div>
+        <h2 className="mt-5 sm:mt-6 font-display text-[40px] sm:text-[56px] leading-[0.98] sm:leading-[0.95] tracking-tight max-w-3xl">
+          Writing the teaching now…
+        </h2>
+        <div className="mt-10 flex items-center gap-3 text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em]">
+            The critic is breaking {film.title} down across six crafts. Usually 15–30s.
+          </span>
+        </div>
+        {fetchError && (
+          <p className="mt-6 text-[14px] text-foreground/70">
+            Couldn't generate the analysis just now ({fetchError}). Refresh to retry.
+          </p>
+        )}
+        {fetching && null}
+      </section>
+    );
+  }
+
   return (
     <>
       <section className="border-t border-border pt-12 sm:pt-16">
@@ -406,7 +488,7 @@ function AnalysisSection({
           Your next move.
         </h2>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {film.extras.map((extra, i) => (
+          {(film.extras ?? []).map((extra, i) => (
             <div
               key={i}
               className="rounded-2xl border border-border bg-card p-6"
